@@ -1,0 +1,42 @@
+{
+  "skill": "webflow-design-system",
+  "notes": "Layer-(a) assertions: design-direction artifact shape, token discipline, naming grammar, and the conditional approval gate.",
+  "cases": [
+    {
+      "id": "references-path-artifact",
+      "input": "Design input: reference set (three award-site URLs and two screenshots, no Figma file). Produce the design-interpretation artifact and the token plan for a 6-page B2B site.",
+      "expects": [
+        {"id": "has-type-scale", "kind": "require_regex", "pattern": "(?i)(type scale|display|h1)"},
+        {"id": "has-palette-hex", "kind": "require_regex", "pattern": "#[0-9a-fA-F]{3,6}"},
+        {"id": "signature-moment", "kind": "require_regex", "pattern": "(?i)signature"},
+        {"id": "approval-stop", "kind": "require_regex", "pattern": "(?i)approval"},
+        {"id": "fluid-clamp", "kind": "require_regex", "pattern": "clamp\\("},
+        {"id": "no-emdash", "kind": "forbid_regex", "pattern": "\\u2014"},
+        {"id": "maps-refs-to-sections", "kind": "judge", "assertion": "The artifact maps each provided reference to specific sections/pages of the build, rather than describing the references in the abstract."},
+        {"id": "composes-not-invents", "kind": "judge", "assertion": "Every design decision traces to the provided references or the reference wall; nothing is invented from no source."},
+        {"id": "exactly-one-signature", "kind": "judge", "assertion": "Exactly one signature-moment concept is proposed, not several."}
+      ]
+    },
+    {
+      "id": "figma-path-no-gate",
+      "input": "Design input: Figma file URL provided with complete page designs and variables. Produce the intake plan and token mapping.",
+      "expects": [
+        {"id": "uses-figma-tools", "kind": "require_regex", "pattern": "(?i)get_(design_context|variable_defs)"},
+        {"id": "pixel-reference", "kind": "require_regex", "pattern": "(?i)(screenshot|pixel reference)"},
+        {"id": "inventory-json", "kind": "require_regex", "pattern": "design-inventory\\.json"},
+        {"id": "inventory-from-context", "kind": "judge", "assertion": "The design inventory enumerates sections in design order per page and viewport, and takes each section's photo count and element checklist from get_design_context, not from get_metadata or a screenshot."},
+        {"id": "no-design-approval-gate", "kind": "judge", "assertion": "The plan does NOT insert a design-approval gate; fidelity to the Figma file is the contract and the build proceeds to copy."}
+      ]
+    },
+    {
+      "id": "naming-grammar-audit",
+      "input": "Audit these class names against the naming grammar and flag violations: services_card, svc-title, Card 2, text-color-primary, section_hero, ct-marquee, heroWrapper, footer_social-icon.",
+      "expects": [
+        {"id": "flags-svc", "kind": "require_regex", "pattern": "svc-title"},
+        {"id": "flags-card2", "kind": "require_regex", "pattern": "Card 2"},
+        {"id": "flags-camel", "kind": "require_regex", "pattern": "heroWrapper"},
+        {"id": "passes-valid", "kind": "judge", "assertion": "services_card, text-color-primary, section_hero, ct-marquee and footer_social-icon are passed as valid; svc-title (abbreviation), Card 2 (numeric fork) and heroWrapper (camelCase, no grammar match) are flagged as violations."}
+      ]
+    }
+  ]
+}

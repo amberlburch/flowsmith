@@ -1,0 +1,115 @@
+{
+  "skill": "webflow-motion",
+  "notes": "Layer-(a) assertions on emitted motion code/plans. Live recipe validation on the eval fixture site (agents/flowsmith/eval/fixture.json) is layer b.",
+  "cases": [
+    {
+      "id": "hero-choreography",
+      "input": "Write the motion code plan for a hero section: split-text headline reveal, subtitle fade-up, one scroll-scrub background scene. Site has GSAP native hosting on. Include where each piece of code is injected.",
+      "expects": [
+        {
+          "id": "reduced-motion-guard",
+          "kind": "require_regex",
+          "pattern": "prefers-reduced-motion"
+        },
+        {
+          "id": "lenis-wiring",
+          "kind": "judge",
+          "assertion": "The plan wires Lenis to GSAP: Lenis's scroll event drives ScrollTrigger.update AND lenis.raf is driven from gsap.ticker (exact call syntax or prose both acceptable)."
+        },
+        {
+          "id": "no-ix2-authoring",
+          "kind": "judge",
+          "assertion": "The plan implements all motion as custom code and never proposes creating or editing a Webflow IX2 interaction (restating that IX2 cannot be authored is fine and correct)."
+        },
+        {
+          "id": "no-ix3-authoring",
+          "kind": "judge",
+          "assertion": "The plan never proposes creating or updating a Webflow IX3 interaction through data_interactions_tool (stating that IX3 is banned except its pilot on the eval fixture site is fine and correct)."
+        },
+        {
+          "id": "keyframes-not-in-whtml",
+          "kind": "judge",
+          "assertion": "Any @keyframes are placed in freeform <style> blocks via data_scripts_tool; the plan never puts keyframes inside whtml_builder's css parameter (mentioning the constraint is fine)."
+        },
+        {
+          "id": "transform-opacity-only",
+          "kind": "judge",
+          "assertion": "Every tween animates only transform-family properties (x, y, scale, rotate, yPercent, clip-path) or opacity, with no width/height/top/left/margin animation."
+        },
+        {
+          "id": "timing-hierarchy",
+          "kind": "judge",
+          "assertion": "Durations respect the hierarchy: micro 0.2-0.3s, standard 0.4-0.6s, feature 0.8-1.2s; the split-text char stagger is around 0.02s."
+        },
+        {
+          "id": "injection-discipline",
+          "kind": "judge",
+          "assertion": "The plan states where each code piece lives (site head for libraries, page footer for page scenes, freeform style for keyframes) per the injection table."
+        },
+        {
+          "id": "restraint",
+          "kind": "judge",
+          "assertion": "The section has at most 5 animated moments and does not add animation to supporting content."
+        }
+      ]
+    },
+    {
+      "id": "restraint-refusal",
+      "input": "The client wants every element on the services section to animate: each card flies in, every icon spins, all text shimmers continuously, plus parallax on everything. Write the motion plan.",
+      "expects": [
+        {
+          "id": "pushes-back",
+          "kind": "judge",
+          "assertion": "The plan explicitly invokes the restraint rules (3-5 moments per section) and proposes a reduced set rather than implementing everything requested."
+        },
+        {
+          "id": "no-continuous-shimmer",
+          "kind": "judge",
+          "assertion": "Continuous/looping decoration on body text is rejected or excluded."
+        }
+      ]
+    },
+    {
+      "id": "shim-leaf-discipline",
+      "input": "Write a small runtime shim for a Webflow page that corrects the text 'Jessica Anderson, CMO' to 'Jessica Anderson, Business Development Manager' inside a team grid where each card is a div containing an image and an h2.team-title.",
+      "expects": [
+        {
+          "id": "no-container-textcontent",
+          "kind": "judge",
+          "assertion": "The shim only writes textContent (or nodeValue) on leaf text-bearing elements (the h2 itself or its text node), never on a container div or any element with child elements, per learned rule 19 (the corienthotpatchv2 incident)."
+        },
+        {
+          "id": "targeted-selector",
+          "kind": "judge",
+          "assertion": "The shim matches the specific element by content check before writing, and is labelled as a temporary shim with a removal note."
+        }
+      ]
+    },
+    {
+      "id": "lifecycle-teardown",
+      "input": "Write the boot-kit plan for a Webflow site that uses Barba page transitions plus GSAP scroll scenes on every page. Address what happens to the animations across internal navigations and inside the Webflow Designer.",
+      "expects": [
+        {
+          "id": "editor-guard",
+          "kind": "require_regex",
+          "pattern": "(?i)(w-editor|Webflow\\.env\\(['\"]editor|editor)"
+        },
+        {
+          "id": "teardown-judge",
+          "kind": "judge",
+          "assertion": "Each scene registers a cleanup that runs on page-out (ScrollTriggers killed, RAF/listeners removed) so animations do not leak or double-fire across Barba/SPA navigations; the plan explicitly re-inits on enter."
+        },
+        {
+          "id": "editor-guard-judge",
+          "kind": "judge",
+          "assertion": "Motion init is gated so it does not run inside the Webflow Designer/editor."
+        },
+        {
+          "id": "single-loader",
+          "kind": "judge",
+          "assertion": "The plan uses a single loader/lifecycle rather than N independent uncoordinated per-embed scripts with no cleanup."
+        }
+      ]
+    }
+  ]
+}

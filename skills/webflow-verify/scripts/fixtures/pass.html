@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webcheck pass fixture</title>
+<meta name="description" content="A page built to pass every webcheck check.">
+<meta property="og:title" content="Webcheck pass fixture">
+<meta property="og:description" content="A page built to pass every webcheck check.">
+<meta property="og:image" content="img/hero-1600.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="/pass.html">
+<link rel="icon" href="data:,">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Webcheck pass fixture"}</script>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 Georgia, serif; color: #222; background: #fff; }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  h1 { font-size: 28px; }
+  .container { max-width: 800px; margin: 0 auto; padding: 0 16px; }
+  header { border-bottom: 1px solid #ddd; }
+  .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+  .nav a { color: #1a4d8f; margin-left: 16px; }
+  .w-nav-button { display: none; padding: 8px 12px; border: 1px solid #1a4d8f; color: #1a4d8f; cursor: pointer; }
+  .hero_img { display: block; width: 100%; height: auto; }
+  .hero_cta { display: inline-block; margin: 16px 0; padding: 12px 20px; background: #1a4d8f; color: #fff; text-decoration: none; }
+  .faq button { font: inherit; padding: 8px 0; background: none; border: 0; color: #222; cursor: pointer; }
+  .field-error { display: none; color: #a00000; }
+  .field-error.is-on { display: block; }
+  input { font: inherit; padding: 8px; border: 1px solid #555; }
+  footer { margin-top: 48px; padding: 24px 16px; border-top: 1px solid #ddd; }
+  /* a looping marquee in a mask: its words cross the mask edge on their own and must not read as a reveal */
+  .logos_mask { overflow: hidden; max-width: 300px; white-space: nowrap; }
+  .logos_track { display: inline-block; animation: logos 20s linear infinite; }
+  .logos_track span { display: inline-block; width: 30px; }
+  @keyframes logos { to { transform: translateX(-900px); } }
+  .more_body { max-height: 0; overflow: hidden; transition: max-height .3s; }
+  .is-open .more_body { max-height: 200px; }
+  @media (max-width: 991px) {
+    .w-nav-button { display: block; }
+    .menu { display: none; position: absolute; left: 0; right: 0; top: 56px; background: #fff; padding: 16px; border-bottom: 1px solid #ddd; }
+    .menu.is-open { display: block; }
+    .menu a { display: block; margin: 8px 0; }
+    header { position: relative; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav" aria-label="Main">
+    <a href="index.html" style="margin-left:0">Home</a>
+    <div class="w-nav-button" role="button" tabindex="0" aria-label="Menu" aria-controls="menu" aria-expanded="false">Menu</div>
+    <div class="menu" id="menu">
+      <a href="index.html">About us</a>
+      <a href="pass.html#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="section_hero container">
+    <h1>Webcheck pass fixture</h1>
+    <img class="hero_img" src="img/hero-1600.png" srcset="img/hero-800.png 800w, img/hero-1600.png 1600w" sizes="(max-width: 832px) calc(100vw - 32px), 800px" width="1600" height="900" alt="A calm blue field">
+    <p>This page is built to pass every check the runner&nbsp;makes.</p>
+    <a class="hero_cta" href="#contact">Get in&nbsp;touch</a>
+  </section>
+  <section class="section_faq container">
+    <h2>Common questions</h2>
+    <div class="faq">
+      <h3><button aria-expanded="false" aria-controls="faq-1">What does this page&nbsp;prove?</button></h3>
+      <div id="faq-1" hidden><p>That a clean page produces no failures at&nbsp;all.</p></div>
+    </div>
+  </section>
+  <section class="section_more container">
+    <div class="logos_mask" aria-hidden="true"><div class="logos_track"><span>L01</span><span>L02</span><span>L03</span><span>L04</span><span>L05</span><span>L06</span><span>L07</span><span>L08</span><span>L09</span><span>L10</span><span>L11</span><span>L12</span><span>L13</span><span>L14</span><span>L15</span><span>L16</span><span>L17</span><span>L18</span><span>L19</span><span>L20</span><span>L21</span><span>L22</span><span>L23</span><span>L24</span><span>L25</span><span>L26</span><span>L27</span><span>L28</span><span>L29</span><span>L30</span><span>L31</span><span>L32</span><span>L33</span><span>L34</span><span>L35</span><span>L36</span><span>L37</span><span>L38</span><span>L39</span><span>L40</span></div></div>
+    <button class="more_toggle" aria-expanded="false">Read more</button>
+    <div class="more_body"><p>Extra detail shown on&nbsp;request.</p></div>
+  </section>
+  <section class="section_contact container" id="contact">
+    <h2>Send a&nbsp;message</h2>
+    <form>
+      <label for="email">Email address</label><br>
+      <input id="email" name="email" type="email" required aria-describedby="email-error">
+      <div class="field-error" id="email-error">Please enter your email&nbsp;address.</div>
+      <p><button type="submit">Send message</button></p>
+    </form>
+  </section>
+</main>
+<footer><p>Built as a fixture for the webcheck&nbsp;runner.</p></footer>
+<script>
+  const btn = document.querySelector('.w-nav-button');
+  const menu = document.getElementById('menu');
+  const setMenu = (open) => { menu.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); };
+  btn.addEventListener('click', () => setMenu(!menu.classList.contains('is-open')));
+  btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+  const q = document.querySelector('.faq button');
+  q.addEventListener('click', () => { const open = q.getAttribute('aria-expanded') !== 'true'; q.setAttribute('aria-expanded', String(open)); document.getElementById('faq-1').hidden = !open; });
+  const more = document.querySelector('.more_toggle');
+  more.addEventListener('click', () => { const open = more.parentElement.classList.toggle('is-open'); more.setAttribute('aria-expanded', String(open)); });
+  const email = document.getElementById('email');
+  email.addEventListener('invalid', () => { email.setAttribute('aria-invalid', 'true'); document.getElementById('email-error').classList.add('is-on'); });
+  document.querySelector('form').addEventListener('submit', (e) => e.preventDefault());
+</script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+{
+  "skill": "flowsmith-loop",
+  "notes": "Layer-(a) gate-runnable assertions on the emitted BUILD PLAN / lite brief / HANDOFF REPORT / ledger entry. The full plan and the handoff are checked by `lint` assertions, which run scripts/ledger_lint.py --plan / --handoff itself (the check the live gate runs), so no pattern here mirrors it. The lite brief regex mirrors lib/agent_gates.py brief_problems: change both together. The gate has no MCP tools and no site, so every case asks for the artifact, not the build. Layer-(b) live-fixture checks (does the critique pass actually catch a real defect on a published page) run outside eval_gate.",
+  "cases": [
+    {
+      "id": "ritual-motion-task",
+      "input": "Run the flowsmith-loop start-of-task ritual for this task: add a scroll-triggered stagger reveal to the three feature cards in the Services section of staging site acme.webflow.io. Design source is Figma file ABC123, node 45:12, which specifies the cards and a 0.4s ease-out reveal. Emit the ritual output and the BUILD PLAN block.",
+      "expects": [
+        {
+          "id": "plan-lint",
+          "kind": "lint",
+          "mode": "plan"
+        },
+        {
+          "id": "risks-nonempty",
+          "kind": "judge",
+          "assertion": "The RISKS field names at least one concrete, task-specific risk. A placeholder, 'none', or a generic platitude like 'things could break' fails."
+        },
+        {
+          "id": "verification-nonempty",
+          "kind": "judge",
+          "assertion": "The VERIFICATION field names how each acceptance criterion will be proven against the PUBLISHED page, not against an API response or an assertion that it 'should work'."
+        },
+        {
+          "id": "lessons-count",
+          "kind": "judge",
+          "assertion": "Between 3 and 5 ledger lessons are restated, each with a stated avoidance for this specific task. Restating the whole ledger, or fewer than 3, fails."
+        },
+        {
+          "id": "lessons-relevant",
+          "kind": "judge",
+          "assertion": "The lessons pulled are motion-relevant or structure-relevant (reduced-motion surfaces, lifecycle teardown, IX2 non-authorability, mask clipping, coupled code references). Pulling unrelated categories such as SEO schema or CMS field naming as the primary lessons fails."
+        },
+        {
+          "id": "reduced-motion-planned",
+          "kind": "require_regex",
+          "pattern": "(?i)prefers-reduced-motion|reduced.motion"
+        },
+        {
+          "id": "reuse-before-create",
+          "kind": "judge",
+          "assertion": "The ritual inventories existing classes, variables or components before proposing new ones, and marks the STRUCTURE field's classes as reused vs new."
+        },
+        {
+          "id": "no-ix2",
+          "kind": "judge",
+          "assertion": "The plan implements motion as custom code (GSAP), never as a Webflow IX2 or IX3 interaction, and does not claim IX2 can be authored via the API."
+        }
+      ]
+    },
+    {
+      "id": "ritual-hard-stop-no-design-source",
+      "input": "Run the flowsmith-loop start-of-task ritual for this task: build the pricing section on staging site acme.webflow.io. There is no Figma file and no reference set; the client said 'make it look premium, three tiers, match the rest of the site'.",
+      "expects": [
+        {
+          "id": "refuses-to-proceed",
+          "kind": "judge",
+          "assertion": "The response refuses to proceed to a full build plan because the design source is missing or too low-fidelity to match spacing, type and colour exactly."
+        },
+        {
+          "id": "stages-operator-moment",
+          "kind": "require_regex",
+          "pattern": "(?i)operator moment|moment #?3"
+        },
+        {
+          "id": "no-guessed-values",
+          "kind": "judge",
+          "assertion": "The response does not invent specific spacing, type-size or colour values to build from. Naming EXISTING site tokens or style-guide values as the thing to reuse is correct and does not violate this; inventing new numeric values does."
+        },
+        {
+          "id": "names-what-it-needs",
+          "kind": "judge",
+          "assertion": "The response states specifically what design input would unblock it (a Figma file or a reference set), rather than only refusing."
+        }
+      ]
+    },
+    {
+      "id": "ritual-lite-two-item-fix",
+      "input": "Run the flowsmith-loop start-of-task ritual for this task on staging site acme.webflow.io: (1) change the About page hero heading from 'Our story' to 'How we work', (2) fix the typo 'recieve' in the About page's second paragraph. Both are text edits on page-level elements; neither touches a shared class, a component, a global embed or site-wide custom code. Emit the brief.",
+      "expects": [
+        {
+          "id": "lite-fields",
+          "kind": "require_regex",
+          "pattern": "(?m)(?=[\\s\\S]*^[ \\t>*#-]*LESSONS IN PLAY\\**:[ \\t]*\\S)(?=[\\s\\S]*^[ \\t>*#-]*ACCEPTANCE\\**:[ \\t]*\\S)(?=[\\s\\S]*^[ \\t>*#-]*VERIFICATION\\**:[ \\t]*\\S)"
+        },
+        {
+          "id": "not-the-full-plan",
+          "kind": "forbid_regex",
+          "pattern": "(?m)^(GOAL|STRUCTURE|RESPONSIVE PLAN|DESIGN COVERAGE):"
+        },
+        {
+          "id": "lite-verifies-published",
+          "kind": "judge",
+          "assertion": "The VERIFICATION line proves each item on the PUBLISHED page (for example the webcheck runner with --expect on the new text, or a cache-busted curl of the staging URL), never by an API success or read-back."
+        },
+        {
+          "id": "lite-names-breakpoints",
+          "kind": "judge",
+          "assertion": "The ACCEPTANCE line names where each item is checked, including the widths or breakpoints for the heading change (a heading edit can create an orphan or a wrap change)."
+        }
+      ]
+    },
+    {
+      "id": "ritual-lite-escalates-shared-class",
+      "input": "Run the flowsmith-loop start-of-task ritual for this task on staging site acme.webflow.io: (1) fix the typo 'recieve' on the Contact page, (2) change the Contact page button label from 'Send' to 'Send message', (3) reduce the padding on the `button_primary` class, which every page uses. Design source is Figma file ABC123. Emit the brief.",
+      "expects": [
+        {
+          "id": "escalates-to-full-plan",
+          "kind": "lint",
+          "mode": "plan"
+        },
+        {
+          "id": "names-why",
+          "kind": "judge",
+          "assertion": "The response says the full brief applies (not the lite one) because item 3 edits a shared class used site-wide, so the blast radius is every page carrying button_primary."
+        },
+        {
+          "id": "shared-class-verification",
+          "kind": "judge",
+          "assertion": "VERIFICATION checks the shared-class change on every page that carries the class, or on the page with the longest label using it, across widths, not only on the Contact page."
+        }
+      ]
+    },
+    {
+      "id": "absorb-root-cause",
+      "input": "Run flowsmith-loop absorb on this developer feedback: 'The section padding on the About hero is 12px off the Figma spec. You eyeballed it. Also this is the second time.' Emit the ledger entry you would append.",
+      "expects": [
+        {
+          "id": "five-fields",
+          "kind": "require_regex",
+          "pattern": "(?s)Context:[\\s\\S]*What went wrong:[\\s\\S]*Root cause:[\\s\\S]*Guardrail:[\\s\\S]*Detection:"
+        },
+        {
+          "id": "entry-heading",
+          "kind": "require_regex",
+          "pattern": "(?m)^###\\s+L-\\d+\\s*(?::|\\s\\u2014)\\s+.+?\\s+\\[(OMIT|STRUCT|NAME|RESP|FID|STATE|MOTION|A11Y|PERF|SEO|CMS|API|LIVE|PROC|COMM)\\|(RITUAL|BUILD|CRITIQUE)(,(RITUAL|BUILD|CRITIQUE))*\\]\\s*$"
+        },
+        {
+          "id": "root-cause-is-missing-check",
+          "kind": "judge",
+          "assertion": "The root cause names the missing rule or check (nothing forced a measured comparison against the token), NOT the symptom (the padding was 12px wrong)."
+        },
+        {
+          "id": "guardrail-checkable",
+          "kind": "judge",
+          "assertion": "The guardrail is a specific checkable instruction naming a measurable object or evidence source, and names which gate it fires at. Vague guidance such as 'be more careful with spacing' or 'pay attention to the design' fails."
+        },
+        {
+          "id": "escalates-on-repeat",
+          "kind": "judge",
+          "assertion": "Because the feedback says this is the second occurrence, the response escalates: it strengthens the guardrail and/or moves its gate earlier, rather than filing a fresh parallel rule of the same strength."
+        },
+        {
+          "id": "dedup-check",
+          "kind": "require_regex",
+          "pattern": "memory_index\\.py|--dupe"
+        },
+        {
+          "id": "rescan-open-work",
+          "kind": "judge",
+          "assertion": "The response addresses re-scanning other open or related work for the same eyeballed-spacing pattern. Either committing to a re-scan, or stating that a check found no other open work, satisfies this; ignoring the question of other instances entirely fails."
+        },
+        {
+          "id": "no-defensiveness",
+          "kind": "judge",
+          "assertion": "The acknowledgement is brief and non-defensive: no excuses, no over-apologising, no relitigating whether the reviewer was right."
+        }
+      ]
+    },
+    {
+      "id": "critique-evidence-rule",
+      "input": "Run the flowsmith-loop critique pass for a completed Services section build on staging site acme.webflow.io. It has three cards with hover states, a scroll reveal, and copy bound to a CMS collection. Emit the checklist walkthrough and the HANDOFF REPORT block.",
+      "expects": [
+        {
+          "id": "handoff-lint",
+          "kind": "lint",
+          "mode": "handoff"
+        },
+        {
+          "id": "self-critique-nonempty",
+          "kind": "judge",
+          "assertion": "The self-critique-results section reports specific things the red-team pass caught, not a restatement that the pass was run or a claim that nothing was found without saying what was checked."
+        },
+        {
+          "id": "evidence-per-check",
+          "kind": "judge",
+          "assertion": "Ticked checks cite an evidence source (published DOM query, curl, screenshot, breakpoint measurement, or a dod.md line). A check ticked on judgement alone, with no named source, fails."
+        },
+        {
+          "id": "empty-state-considered",
+          "kind": "judge",
+          "assertion": "Because the copy is CMS-bound, the critique addresses the empty-collection state and the full interactive state matrix (including hover and focus), not only the happy path."
+        },
+        {
+          "id": "live-not-staged",
+          "kind": "judge",
+          "assertion": "Nothing is reported complete on the basis of an API success or a staged change. Any unpublished change is reported as STAGED, NOT LIVE with the owed publish."
+        },
+        {
+          "id": "skipped-categories-named",
+          "kind": "judge",
+          "assertion": "Any taxonomy category not walked is named with a reason, rather than silently omitted."
+        }
+      ]
+    },
+    {
+      "id": "no-standards-duplication",
+      "input": "A developer asks: what are the accessibility and performance standards this Webflow build is judged against, and where do they live? Answer as flowsmith-loop.",
+      "expects": [
+        {
+          "id": "points-at-dod",
+          "kind": "require_regex",
+          "pattern": "dod\\.md"
+        },
+        {
+          "id": "does-not-restate",
+          "kind": "judge",
+          "assertion": "The answer directs to dod.md as the single source of truth for the standards rather than reproducing a full competing checklist of thresholds. Citing a few specific values while naming dod.md as canonical is fine; presenting an independent standalone standards list is not."
+        },
+        {
+          "id": "names-own-scope",
+          "kind": "judge",
+          "assertion": "The answer distinguishes flowsmith-loop's own scope (the process: how work is planned, critiqued, handed off, or how feedback is absorbed: naming any of these, or its modes generally, is sufficient) from the standards themselves, which belong to dod.md."
+        }
+      ]
+    }
+  ]
+}

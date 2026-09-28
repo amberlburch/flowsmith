@@ -1,0 +1,20 @@
+{
+  "purpose": "The one Webflow site flowsmith evals may write to and staging-publish. Evals never touch a client site.",
+  "status": "waiting_on_amber",
+  "site_id": null,
+  "staging_url": null,
+  "custom_domains": [],
+  "plan_requirement": "The site sits in a paid Workspace plan, where a Starter site gets up to 300 static pages and custom code at no extra cost, or carries a paid CMS site plan (Basic has no CMS, and L-85 needs a collection). A free Starter site in a free workspace allows 2 static pages and no custom code, which blocks L-81, L-83 and L-88 and the page-per-case reset below.",
+  "case_page_slug": "eval-<case id in lower case>, for example eval-l-83",
+  "rules": [
+    "Writes and staging publishes are allowed only when every Webflow call's siteId equals site_id.",
+    "custom_domains stays empty, so every publish is publishToWebflowSubdomain true with customDomains [].",
+    "Each case runs on its own case page, created once with data_pages_tool create_page and reused on every run. data_pages_tool has no delete action, so never create a page per run.",
+    "Before each case, get_all_elements depth 1 on the case page, remove_element every child of Body, and clear that page's head and footer freeform code, so the case starts blank.",
+    "Anything site-wide a case writes (site head or footer code, variables, styles, CMS collections and items) is named with the prefix eval_<case id>_ and removed by the case's last step. Anything the API cannot delete is reused by name on the next run, never recreated."
+  ],
+  "setup": "runbooks.md, section 'Eval sandbox site'.",
+  "unblocks": ["L-80", "L-81", "L-83", "L-84", "L-85", "L-88", "L-110 (live variant)"],
+  "pinned_by": null,
+  "pinned_on": null
+}

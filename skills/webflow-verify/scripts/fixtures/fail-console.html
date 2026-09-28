@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Console fixture</title>
+<link rel="icon" href="data:,">
+</head>
+<body>
+<main><h1>Console fixture</h1></main>
+<script>
+  console.error('fixture console error');
+  setTimeout(() => { throw new Error('fixture uncaught error'); }, 10);
+</script>
+</body>
+</html>

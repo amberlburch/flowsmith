@@ -1,0 +1,82 @@
+{
+  "skill": "webflow-build",
+  "notes": "Layer-(a) assertions on the emitted pipeline plan (PlanArtifact shape). Live pipeline run to phase 9 on the eval fixture site (agents/flowsmith/eval/fixture.json) is layer b.",
+  "cases": [
+    {
+      "id": "full-pipeline-plan",
+      "input": "Produce the phase plan (PlanArtifact) for a new 12-page B2B Webflow site. Design input: reference set. Client will send feedback via Pastel. Includes a blog CMS and imagery to be generated (estimated $60 of gen-media credits). Migration from an old WordPress site.",
+      "expects": [
+        {
+          "id": "phase0-checklist",
+          "kind": "require_regex",
+          "pattern": "(?i)(subdomain|staging)[\\s\\S]{0,80}(indexing|noindex)"
+        },
+        {
+          "id": "gsap-toggle-staged",
+          "kind": "require_regex",
+          "pattern": "(?i)GSAP[\\s\\S]{0,60}(toggle|settings)"
+        },
+        {
+          "id": "copy-before-builds",
+          "kind": "judge",
+          "assertion": "The copy phase (brand-profile, page-copy, humanise, approval) is sequenced BEFORE section builds, with the rationale that whtml bakes text in."
+        },
+        {
+          "id": "ia-approval-before-design",
+          "kind": "judge",
+          "assertion": "IA/sitemap gets operator approval before design direction begins."
+        },
+        {
+          "id": "design-gate-conditional",
+          "kind": "judge",
+          "assertion": "Because the design input is references, the plan includes the design-interpretation approval gate (3b)."
+        },
+        {
+          "id": "spend-gated",
+          "kind": "require_regex",
+          "pattern": "(?i)(\\$60|spend|T3|tier 3)[\\s\\S]{0,80}(approval|gate)"
+        },
+        {
+          "id": "migration-crawl",
+          "kind": "judge",
+          "assertion": "The plan crawls the old WordPress site to build the URL inventory BEFORE producing the redirect map."
+        },
+        {
+          "id": "prod-gated-with-rerun",
+          "kind": "judge",
+          "assertion": "Production publish is a Tier 3 gate whose exit condition is the launch-day production SEO re-run on the custom domain."
+        },
+        {
+          "id": "drafts-during-build",
+          "kind": "judge",
+          "assertion": "Pages stay draft:true during construction and flip only entering their own verify loop."
+        },
+        {
+          "id": "no-scope-absorption",
+          "kind": "judge",
+          "assertion": "Revision handling classifies items and flags scope changes rather than absorbing them; rounds are capped at 2."
+        },
+        {
+          "id": "checkpointed",
+          "kind": "require_regex",
+          "pattern": "(?i)manifest\\.json|manifest[^\\n]{0,80}(phase|boundary|resume)"
+        },
+        {
+          "id": "publish-mutex",
+          "kind": "judge",
+          "assertion": "Section builders never publish individually; the plan batches one staging publish per wave, taken under the publish lock with publishToWebflowSubdomain true and customDomains [], respecting the ~1/min publish_site rate limit."
+        },
+        {
+          "id": "staging-params",
+          "kind": "require_regex",
+          "pattern": "customDomains[^\\n]{0,20}\\[\\]"
+        },
+        {
+          "id": "originals-before-compress",
+          "kind": "judge",
+          "assertion": "Before any compress_assets step, the plan records each asset's original hostedUrl and downloads the original file, because compression replaces the hosted file with no undo."
+        }
+      ]
+    }
+  ]
+}

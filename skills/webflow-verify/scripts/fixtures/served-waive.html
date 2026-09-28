@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Served waiver fixture</title>
+<meta name="description" content="A page whose only served failure is one placeholder link.">
+<meta property="og:title" content="Served waiver fixture">
+<meta property="og:description" content="A page whose only served failure is one placeholder link.">
+<meta property="og:image" content="img/small-200.png">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="/served-waive.html">
+<link rel="icon" href="data:,">
+<!-- the loader Webflow injects for Google Fonts: warns, never fails -->
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/plain"></script>
+</head>
+<body>
+<main>
+  <h1>Served waiver fixture</h1>
+  <!-- allowed by design: a scripted toggle, a Webflow lightbox, and #top -->
+  <a href="#" role="button" aria-controls="menu">Toggle</a>
+  <a href="#" class="w-lightbox">Open gallery</a>
+  <a href="#TOP">Back to top</a>
+  <div id="menu"><a href="index.html">Home</a></div>
+  <!-- the one real placeholder, waivable with a reason -->
+  <a href="#" class="js-trigger">Scripted trigger</a>
+</main>
+</body>
+</html>

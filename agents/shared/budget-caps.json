@@ -1,0 +1,10 @@
+{
+  "description": "Per-agent cost and tool-call caps. With no flowsmith row, lib/agent_gates.py caps each flowsmith dispatch at 200 tool calls with a warning at 150; a flowsmith row with tool_call_cap and warn_at_pct overrides that. lib/agent_runtime.py check_budget reads the same rows.",
+  "daily_fleet_ceiling_usd": 50,
+  "daily_fleet_warn_at_pct": 80,
+  "agents": {},
+  "halt_actions_meaning": {
+    "stop": "halt the run and report",
+    "escalate": "halt and surface to the operator"
+  }
+}

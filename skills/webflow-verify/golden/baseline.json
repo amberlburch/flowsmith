@@ -1,0 +1,160 @@
+{
+  "skill": "webflow-verify",
+  "notes": "Layer-(a) gate-runnable assertions on the emitted verification PLAN (the gate has no MCP tools; live-fixture checks are layer b, run outside eval_gate).",
+  "cases": [
+    {
+      "id": "phase-mode-plan",
+      "input": "Produce the verification plan (checks only, no execution) for a Webflow homepage on staging site my-site.webflow.io, phase mode. The page has a hero video, a marquee, a contact form, and GSAP scroll scenes.",
+      "expects": [
+        {
+          "id": "all-breakpoints",
+          "kind": "require_regex",
+          "pattern": "(?s)\\b320\\b.*\\b1920\\b"
+        },
+        {
+          "id": "console-zero",
+          "kind": "require_regex",
+          "pattern": "(?i)console[\\s\\S]{0,40}(zero|no) error"
+        },
+        {
+          "id": "staging-noindex",
+          "kind": "require_regex",
+          "pattern": "(?is)(staging|webflow\\.io)[^\\n]{0,120}noindex|noindex[^\\n]{0,120}(staging|webflow\\.io)"
+        },
+        {
+          "id": "tbt-not-inp-lab",
+          "kind": "require_regex",
+          "pattern": "(?i)TBT"
+        },
+        {
+          "id": "no-lab-inp-claim",
+          "kind": "judge",
+          "assertion": "The plan never claims Lighthouse (or any lab run) measures INP; INP is treated as field-only with TBT as the lab proxy (explaining this distinction is correct, not a violation)."
+        },
+        {
+          "id": "reduced-motion",
+          "kind": "require_regex",
+          "pattern": "(?i)prefers-reduced-motion|reduced.motion"
+        },
+        {
+          "id": "form-name-trap",
+          "kind": "require_regex",
+          "pattern": "(?i)(submit.time|rendered|after js)[\\s\\S]{0,60}name|name[\\s\\S]{0,60}(submit.time|rendered|after js)"
+        },
+        {
+          "id": "published-not-api",
+          "kind": "judge",
+          "assertion": "The plan treats the PUBLISHED page (curl/headless Chrome) as the only evidence and never treats an API response as verification."
+        },
+        {
+          "id": "publish-lock-staging-params",
+          "kind": "require_regex",
+          "pattern": "(?is)lock[\\s\\S]*customDomains[^\\n]{0,20}\\[\\]|customDomains[^\\n]{0,20}\\[\\][\\s\\S]*lock"
+        },
+        {
+          "id": "perf-instrument",
+          "kind": "require_regex",
+          "pattern": "(?i)performance_start_trace|lighthouse(@[\\d.]+)? (cli|<url>|http)|npx -y lighthouse|throttled trace"
+        },
+        {
+          "id": "perf-not-lighthouse-audit",
+          "kind": "judge",
+          "assertion": "Performance (score, LCP, CLS, TBT, page weight) is measured with a throttled performance trace or the Lighthouse CLI and cites the saved file. lighthouse_audit, which has no performance category, is never named as the source of a performance number; naming it for accessibility, SEO or best practices is fine."
+        },
+        {
+          "id": "escalation-bounded",
+          "kind": "judge",
+          "assertion": "The loop is bounded at 3 fix rounds with an explicit escalation path carrying evidence."
+        }
+      ]
+    },
+    {
+      "id": "launch-mode-plan",
+      "input": "Produce the launch-mode verification plan for production publish of client-site.com (migrated from an old WordPress site).",
+      "expects": [
+        {
+          "id": "prod-no-noindex",
+          "kind": "require_regex",
+          "pattern": "(?i)no[\\s-]?noindex|noindex[\\s\\S]{0,40}(absent|not present|must not)"
+        },
+        {
+          "id": "robots-fetch",
+          "kind": "require_regex",
+          "pattern": "(?i)robots\\.txt"
+        },
+        {
+          "id": "sitemap-custom-host",
+          "kind": "require_regex",
+          "pattern": "(?i)sitemap"
+        },
+        {
+          "id": "canonical-host",
+          "kind": "require_regex",
+          "pattern": "(?i)canonical"
+        },
+        {
+          "id": "redirect-spotcheck",
+          "kind": "require_regex",
+          "pattern": "(?i)redirect"
+        },
+        {
+          "id": "t3-exit-condition",
+          "kind": "judge",
+          "assertion": "The plan frames the production checks as the exit condition of the Tier 3 publish, run against the custom domain post-publish."
+        }
+      ]
+    },
+    {
+      "id": "two-surface-retirement",
+      "input": "Plan the retirement of the custom script 'legacy-hotpatch.js' from a Webflow site (it exists as both a registered script applied site-wide and pasted in a page's freeform footer), and the verification that it is fully gone.",
+      "expects": [
+        {
+          "id": "registry-surface",
+          "kind": "require_regex",
+          "pattern": "(?i)(registered.?scripts|scripts registry|get_site_scripts|remove_site_script)"
+        },
+        {
+          "id": "freeform-surface",
+          "kind": "require_regex",
+          "pattern": "(?i)freeform"
+        },
+        {
+          "id": "published-grep",
+          "kind": "require_regex",
+          "pattern": "(?i)(grep|search)[^\\n]{0,80}(published|html)|published[^\\n]{0,60}(grep|absent|gone)"
+        },
+        {
+          "id": "both-surfaces-judge",
+          "kind": "judge",
+          "assertion": "The plan removes the script from BOTH the scripts registry and the freeform code block, and verifies removal by checking the PUBLISHED HTML for the script marker; removal from one surface alone is explicitly insufficient."
+        }
+      ]
+    },
+    {
+      "id": "visual-fidelity-grounded",
+      "input": "Produce the visual-fidelity portion of the verification plan for a homepage whose design input is a Figma file, phase mode.",
+      "expects": [
+        {
+          "id": "reference-grounded",
+          "kind": "judge",
+          "assertion": "The fidelity check compares the published-page screenshot against the DESIGN REFERENCE image (Figma get_screenshot), and the VLM judge scores against that reference: it never self-judges the page against the model's own taste."
+        },
+        {
+          "id": "delta-e-colour",
+          "kind": "require_regex",
+          "pattern": "(?i)(delta.?e|ciede|CIEDE2000|ΔE)"
+        },
+        {
+          "id": "per-breakpoint",
+          "kind": "judge",
+          "assertion": "The visual-fidelity check runs per breakpoint and names specific discrepancies (spacing, hierarchy, type scale, colour) that become fix-round tasks, rather than a single pass/fail with no detail."
+        },
+        {
+          "id": "not-geometry-only",
+          "kind": "judge",
+          "assertion": "The plan treats geometry+token equality as necessary but not sufficient, adding perceptual checks because token-equal pages can still read as un-designed."
+        }
+      ]
+    }
+  ]
+}

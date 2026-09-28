@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>State fixture</title>
+<link rel="icon" href="data:,">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 sans-serif; }
+  header { position: relative; padding: 12px 16px; }
+  .w-nav-button { display: none; width: 80px; padding: 8px; border: 1px solid #333; cursor: pointer; }
+  .menu a { margin-right: 12px; }
+  .panel { display: none; }
+  .panel.is-open { display: block; }
+  .who_body { max-height: 0; overflow: hidden; transition: max-height .4s; }
+  .who_item.is-open .who_body { max-height: 300px; }
+  @media (max-width: 991px) {
+    .w-nav-button { display: block; }
+    .menu { display: none; }
+    /* the opened menu renders above the viewport and wider than it */
+    .menu.is-open { display: block; position: absolute; left: 0; top: -166px; width: 120vw; background: #fff; }
+    .menu.is-open a { display: block; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <div class="w-nav-button" role="button" tabindex="0" aria-label="Menu" aria-controls="menu" aria-expanded="false">Menu</div>
+    <div class="menu" id="menu"><a href="index.html">Home</a><a href="index.html">About us</a></div>
+  </nav>
+</header>
+<main>
+  <h1>State fixture</h1>
+  <div class="accordion">
+    <button class="accordion_trigger" aria-expanded="false" aria-controls="p1">Mismatched question</button>
+    <div class="panel" id="p1"><p>The attribute never changes.</p></div>
+  </div>
+  <div class="faq">
+    <div class="faq_question">Question with no attribute</div>
+    <div class="panel"><p>Opens without aria-expanded.</p></div>
+  </div>
+  <!-- collapsed by max-height, not display: the panel text is in the layout but clipped away -->
+  <div class="who_item">
+    <a href="#" role="button" class="who_head" aria-expanded="false" aria-controls="who1">Who we help</a>
+    <div class="who_body" id="who1"><p>Collapsed by max-height, and its aria-expanded never changes.</p></div>
+  </div>
+  <!-- a real GET form: clicking either control must never reach submitted.html -->
+  <form class="picker" action="submitted.html" method="get">
+    <input type="hidden" name="picked" value="yes">
+    <button aria-expanded="false" aria-controls="plans">Pick a plan</button>
+    <div class="picker_toggle" role="button" tabindex="0" aria-expanded="false">More options</div>
+    <ul id="plans" hidden><li>Starter plan</li></ul>
+  </form>
+  <div class="search-empty">No articles match your search.</div>
+  <div class="w-form-done">Thank you for your enquiry.</div>
+  <form>
+    <label for="f1">Name</label><input id="f1" name="field">
+    <label for="f2">Email</label><input id="f2" name="field">
+    <button type="submit">Send</button>
+  </form>
+</main>
+<script>
+  const btn = document.querySelector('.w-nav-button');
+  const menu = document.getElementById('menu');
+  btn.addEventListener('click', () => menu.classList.toggle('is-open'));
+  document.querySelector('.accordion_trigger').addEventListener('click', () => document.getElementById('p1').classList.toggle('is-open'));
+  document.querySelector('.faq_question').addEventListener('click', (e) => e.target.nextElementSibling.classList.toggle('is-open'));
+  document.querySelector('form').addEventListener('submit', (e) => e.preventDefault());
+  document.querySelector('.who_head').addEventListener('click', (e) => { e.preventDefault(); e.currentTarget.closest('.who_item').classList.toggle('is-open'); });
+  document.querySelector('.picker_toggle').addEventListener('click', (e) => e.currentTarget.closest('form').requestSubmit());
+</script>
+</body>
+</html>

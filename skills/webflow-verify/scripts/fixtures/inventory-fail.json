@@ -1,0 +1,19 @@
+{
+  "viewports": { "desktop": 1440, "mobile": 375 },
+  "pages": {
+    "/fail-complete.html": {
+      "desktop": [
+        { "section": "hero", "node": "3:10", "photos": 2, "elements": [".hero_badge", "h1"] },
+        { "section": "team", "node": "3:20" },
+        { "section": "logos", "node": "3:30" },
+        { "section": "testimonials", "node": "3:40" },
+        { "section": "cta", "node": "3:50", "selector": ".section_cta .missing-button" },
+        { "section": "footer-note", "node": "3:60", "elements": [".never-built"] }
+      ]
+    }
+  },
+  "waivers": [
+    { "page": "/fail-complete.html", "viewport": "desktop", "section": "cta", "reason": "Client dropped the CTA in review", "approver": "The operator", "date": "2026-09-28" },
+    { "page": "/fail-complete.html", "section": "footer-note", "reason": "No approver recorded" }
+  ]
+}

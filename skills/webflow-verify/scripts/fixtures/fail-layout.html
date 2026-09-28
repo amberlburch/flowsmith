@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layout fixture</title>
+<link rel="icon" href="data:,">
+<style>
+  * { box-sizing: border-box; }
+  /* body clips sideways, so scrollWidth alone reads clean (the L-90 amendment case) */
+  html, body { overflow-x: hidden; }
+  body { margin: 0; font: 16px/1.5 sans-serif; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .hero_ctas { display: flex; gap: 12px; max-width: 300px; }
+  .btn { flex-shrink: 0; white-space: nowrap; padding: 12px 20px; background: #134; color: #fff; text-decoration: none; }
+  .card { height: 40px; overflow: hidden; width: 200px; border: 1px solid #999; }
+  .longword { width: 150px; }
+  /* L-106: overlay height is fixed while the container scales, so the pair collides
+     below 697px and again in a band between 900 and 1000 only. */
+  .grid { display: block; }
+  .stats { position: relative; aspect-ratio: 5 / 2; background: #eee; margin: 24px 0; }
+  .stat { position: absolute; left: 10%; right: 10%; height: 120px; background: #fff; border: 1px solid #333; }
+  .stat-a { top: 8%; }
+  .stat-b { bottom: 6%; }
+  @media (min-width: 900px) { .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } }
+  @media (min-width: 1000px) { .stat { height: 60px; } }
+</style>
+</head>
+<body>
+<main class="container">
+  <h1>Layout fixture</h1>
+  <div class="hero_ctas">
+    <a class="btn" href="#">Start your comprehensive business review today</a>
+  </div>
+  <div class="card">One line fits. The second and third lines of this card are cut off by its fixed height.</div>
+  <p class="longword">Supercalifragilisticexpialidocious</p>
+  <div class="grid">
+    <div class="stats">
+      <div class="stat stat-a">Twelve years in practice</div>
+      <div class="stat stat-b">Four hundred clients</div>
+    </div>
+    <div><p>Second column.</p></div>
+  </div>
+</main>
+</body>
+</html>

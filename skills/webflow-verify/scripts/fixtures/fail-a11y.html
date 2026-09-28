@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility fixture</title>
+<link rel="icon" href="data:,">
+<style>
+  body { margin: 0; padding: 16px; font: 16px/1.5 sans-serif; color: #222; background: #fff; }
+  .bare:focus, .bare:focus-visible { outline: none; }
+  .pale { color: #bbb; }
+  .offscreen { position: absolute; left: -9999px; }
+</style>
+</head>
+<body>
+<div>
+  <h1>Accessibility fixture</h1>
+  <h1>A second top heading</h1>
+  <h2>Section</h2>
+  <h4>Skipped a level</h4>
+  <p class="pale">Pale grey words on white fail contrast.</p>
+  <img src="img/hero-800.png" width="400" height="225">
+  <a href="#top"><svg width="20" height="20" aria-hidden="true"><circle cx="10" cy="10" r="8"/></svg></a>
+  <a class="offscreen" href="#top">You cannot see me</a>
+  <button class="bare" type="button">No focus ring</button>
+  <label for="nope">Orphan label</label>
+  <input type="text" name="q" placeholder="Search">
+  <input id="trap" type="text" aria-label="Focus trap" name="trap">
+</div>
+<script>
+  document.getElementById('trap').addEventListener('keydown', (e) => { if (e.key === 'Tab') e.preventDefault(); });
+</script>
+</body>
+</html>

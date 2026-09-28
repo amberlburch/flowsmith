@@ -1,0 +1,17 @@
+{
+  "viewports": { "desktop": 1440, "mobile": 375 },
+  "pages": {
+    "/pass.html": {
+      "desktop": [
+        { "section": "hero", "node": "1:10", "photos": 1, "elements": [".hero_cta", "h1"] },
+        { "section": "faq", "node": "1:20", "elements": [".faq button"] },
+        { "section": "contact", "node": "1:30", "elements": ["form", "input[type=email]"] }
+      ],
+      "mobile": [
+        { "section": "hero", "node": "2:10", "photos": 1, "elements": [".hero_cta"] },
+        { "section": "faq", "node": "2:20" },
+        { "section": "contact", "node": "2:30", "elements": ["form"] }
+      ]
+    }
+  }
+}

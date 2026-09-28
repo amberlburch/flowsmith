@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Images fixture</title>
+<link rel="icon" href="data:,">
+<style>
+  body { margin: 0; font: 16px/1.5 sans-serif; }
+  .hero { display: block; width: 100%; height: auto; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; padding: 16px; }
+</style>
+</head>
+<body>
+<main>
+  <img class="hero" src="img/lazy-hero.png" loading="lazy" width="800" height="450" alt="Lazy hero, the page's largest paint">
+  <h1>Images fixture</h1>
+  <div class="row">
+    <img src="img/small-200.png" width="200" height="200" style="width:400px;height:400px" alt="Upscaled to twice its pixels">
+    <img src="img/huge-2400x3600.png" width="2400" height="3600" style="width:305px;height:300px;object-fit:cover" alt="Oversupplied">
+    <img src="img/missing.png" width="40" height="40" alt="Broken">
+    <img src="img/hero-800.png" style="width:300px" alt="No width or height attributes">
+  </div>
+</main>
+</body>
+</html>
