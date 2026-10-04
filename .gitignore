@@ -4,3 +4,18 @@ __pycache__/
 state/
 results/
 logs/
+
+# Safety baseline (added 2026-10-04)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+node_modules/
+.claude/worktrees/
+.claude/settings.local.json
+*.wav
+*.aif
+*.mp4
+*.mov
