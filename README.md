@@ -2,7 +2,7 @@
 
 An autonomous Webflow developer for Claude Code. It runs a full site build, from discovery to launch, against a written definition of done, and verifies every change on the published page rather than trusting the API response.
 
-Built and operated at Corient. This repo is the portable package: the agent, its five skills, the gate hook that enforces its publish and process rules, the scripts they call, and the learned-rules ledger from production builds.
+Built by [Amber Burch](https://amberburch.com) and operated at Corient. This repo is the portable package: the agent, its five skills, the gate hook that enforces its publish and process rules, the scripts they call, and the learned-rules ledger from production builds.
 
 ## What is in the box
 
@@ -148,7 +148,7 @@ Three rules the agent will hold you to:
 
 ## What is not included
 
-- **Creative-code runtime.** Tier 2 and 3 builds (WebGL surfaces, full immersive pages) load `corient-web-runtime`, a private Corient package. Tier 0 and 1 builds, which cover most marketing sites, do not need it.
+- **Creative-code runtime.** Tier 2 and 3 builds (WebGL surfaces, full immersive pages) load a private creative-code runtime that is not part of this repo. Tier 0 and 1 builds, which cover most marketing sites, do not need it.
 - **Site corpus.** The whole-site reference cards used for from-scratch design direction stay with Corient. Supply a Figma file or a reference set at discovery instead.
 - **Companion agents.** SYSTEM.md hands app, API and n8n work to a `wright` agent and standalone live-site repairs to `webflow-fix`. Neither ships here.
 - **Test suites.** The pytest suites behind the ledger linter and the webcheck runner stay private. The runner's `fixtures/` ship, so it can be tried against local pages.
