@@ -171,3 +171,7 @@ python3 ~/.claude/skills/flowsmith-loop/scripts/ledger_lint.py --reindex && pyth
 3. Remove the four `settings.json` hook entries that run `agent-gates.sh` or `agent_telemetry.py`. If you had a `settings.json` before the first install, its original is in that install's backup folder.
 
 Backups from each install are under `~/.claude/_backup/`.
+
+## Licence
+
+MIT. See `LICENSE`.
